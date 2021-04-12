@@ -1,0 +1,49 @@
+openapi: 3.0.1
+info:
+  title: Web Service Api
+  description: API for the Empower Code Challenge Web Service
+  version: '1.0'
+servers:
+  - url: http://localhost:<port>/api
+    description: local environment
+paths:
+  '/dispatch-closest-driver':
+    post:
+      summary: 'dispatch-closest-driver - POST'
+      description: finds the closest available driver and returns their id
+      operationId: dispatchClosestDriver
+      parameters:
+        - name: lon
+          in: query
+          description: longitude of the comparison point
+          required: true
+          schema:
+            type: number
+            format: double
+        - name: lat
+          in: query
+          description: latitude of the comparison point
+          required: true
+          schema:
+            type: number
+            format: double        
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/closestDriverResponse'
+components:
+  schemas:
+    closestDriverResponse:
+      type: object
+      properties:
+        driverId:
+          type: string
+          readOnly: true
+          description: the id of the driver
+        distance:
+          type: number
+          format: integer
+          description: The route distance (in meters) of the driver

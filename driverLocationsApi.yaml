@@ -1,0 +1,51 @@
+openapi: 3.0.1
+info:
+  title: Driver Locations API
+  description: API to get list of driver locations
+  version: '1.0'
+servers:
+  - url: https://func-yazam-hr-challenge.azurewebsites.net/api
+    description: production environment
+paths:
+  '/getdriverlocations':
+    get:
+      summary: '/getdriverlocations - GET'
+      description: retrieves an array of driver location coordinates
+      operationId: getDriverLocations
+      parameters:
+        - name: code
+          in: query
+          description: security code to get access to the endpoint
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/arrayOfDriverLocations'
+        '401':
+          description: UNAUTHORIZED  
+components:
+  schemas:
+    arrayOfDriverLocations:
+      type: array
+      items:
+        $ref: '#/components/schemas/driverLocation'
+    driverLocation:
+      type: object
+      properties:
+        id:
+          description: unique identifier for the driver
+          type: string
+          readOnly: true
+        lon:
+          description: longitude of the driver location
+          type: number
+          format: double
+        lat:
+          description: latitude of the driver location
+          type: number
+          format: double
